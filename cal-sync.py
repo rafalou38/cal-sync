@@ -1,6 +1,7 @@
 from ics import Calendar
 from datetime import timedelta
 import arrow
+import requests
 
 
 horaires = {
@@ -17,10 +18,8 @@ horaires = {
 }
 
 
-# url = "https://0383243u.index-education.net/pronote/ical/Edt.ics?icalsecurise=EEFC26724EC5C4BCAF79E4D3FCFAD22CCAD6990EA20E1A8DDB4628D72D50C858866C2980D0F06CBA0A81005955FF2731&version=2022.0.3.1&param=66683d31"
-# c = Calendar(requests.get(url).text)
-with open("./edt.ics", "r", encoding="utf-8") as f:
-    c = Calendar(f.read())
+url = "https://0383243u.index-education.net/pronote/ical/Edt.ics?icalsecurise=EEFC26724EC5C4BCAF79E4D3FCFAD22CCAD6990EA20E1A8DDB4628D72D50C858866C2980D0F06CBA0A81005955FF2731&version=2022.0.3.1&param=66683d31"
+c = Calendar(requests.get(url).text)
 
 local = arrow.now("Europe/Paris").tzinfo
 for e in c.events:
@@ -43,5 +42,5 @@ for e in c.events:
         e.name = e.location.split("x")[0] + e.name.split(" - ")[0]
 
 
-with open("./out.ics", "wb") as f:
+with open("/var/www/html/edt.ics", "wb") as f:
     f.write(bytes(c.serialize().replace("\n\r", "\n"), encoding="utf-8"))
