@@ -2,7 +2,7 @@ from ics import Calendar
 from datetime import timedelta
 import arrow
 import requests
-
+import re
 
 horaires = {
     8: [8, 0],
@@ -22,11 +22,16 @@ url = "https://0383243u.index-education.net/pronote/ical/Edt.ics?icalsecurise=EE
 c = Calendar(requests.get(url).text)
 
 local = arrow.now("Europe/Paris").tzinfo
-for e in c.events:
+for i, e in enumerate(set(c.events)):
     # datetime_obj = datetime.fromisoformat()
     begin = e.begin.astimezone(local)
     if not e.duration:
         continue
+
+    if re.search(r"annulé|absent", e.name, re.UNICODE):
+        print(len(c.events))
+        c.events.remove(e)
+        print(len(c.events))
 
     try:
         newt = horaires[begin.hour]
