@@ -29,9 +29,7 @@ for i, e in enumerate(set(c.events)):
         continue
 
     if re.search(r"annulé|absent", e.name, re.UNICODE):
-        print(len(c.events))
         c.events.remove(e)
-        print(len(c.events))
 
     try:
         newt = horaires[begin.hour]
