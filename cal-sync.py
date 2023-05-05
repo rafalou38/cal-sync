@@ -45,5 +45,5 @@ for i, e in enumerate(set(c.events)):
         e.name = e.location.split("x")[0] + e.name.split(" - ")[0]
 
 
-with open("/var/www/html/edt.ics", "wb") as f:
+with open("/var/www/static/edt.ics", "wb") as f:
     f.write(bytes(c.serialize().replace("\n\r", "\n"), encoding="utf-8"))
